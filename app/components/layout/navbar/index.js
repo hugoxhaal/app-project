@@ -19,9 +19,7 @@ import {
 import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons'
 import Logo from './Logo'
 
-const allLinks = ['Inicio', 'Projects', 'Team']
-
-const NavLink = ({ children }) => <Link href='#'>{children}</Link>
+const allLinks = [{ name: 'Inicio', path: '/' }, { name: 'Estudiantes', path: '/estudiantes' }, { name: 'Notas', path: '/notas' }]
 
 export default function NavBar ({ children }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -76,8 +74,8 @@ export default function NavBar ({ children }) {
           ? (
             <Box pb={4} display={{ md: 'none' }}>
               <Stack as='nav' spacing={4}>
-                {allLinks.map((link) => (
-                  <NavLink key={link}>{link}</NavLink>
+                {allLinks.map((link, i) => (
+                  <Link key={i} href={link.path}>{link.name}</Link>
                 ))}
               </Stack>
             </Box>

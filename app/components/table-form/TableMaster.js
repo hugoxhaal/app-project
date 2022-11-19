@@ -34,7 +34,7 @@ const TableMaster = ({ columns = [], data = [] }) => {
             {data.map((row, i) =>
               <Tr key={i}>
                 {columns.map((col, j) =>
-                  <Td key={j}>{row[col.dataIndex]}</Td>
+                  <Td key={j} isNumeric={col.isNumeric}>{row[col.dataIndex]}</Td>
                 )}
               </Tr>
             )}
