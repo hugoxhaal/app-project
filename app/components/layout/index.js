@@ -16,7 +16,7 @@ export default function Layout ({ children }) {
   if (!storedValue) {
     return (
       <ChakraProvider>
-        <Box w='100%' h='100%'>
+        <Box w='100%' h='calc(100vh)'>
           {children}
         </Box>
       </ChakraProvider>
@@ -25,7 +25,7 @@ export default function Layout ({ children }) {
 
   return (
     <ChakraProvider>
-      <Box w='100%' h='100%' backgroundColor='rgba(239, 243, 243, 0.4)'>
+      <Box w='100%' h='calc(100vh)' bg='rgba(240, 240, 240, 0.4)'>
         <NavBar>{children}</NavBar>
       </Box>
     </ChakraProvider>
