@@ -25,21 +25,22 @@ const Register = () => {
     >
       <Box>
         <Heading w='100%' textAlign='center' fontWeight='bold' mb='3%' fontSize={32}>
-          Registrar Estudiante
+          Buscar Estudiante
         </Heading>
         <Flex>
-          <FormControl mr='5%'>
-            <FormLabel htmlFor='first-name' fontWeight='bold' textOverflow='ellipsis'>
-              Nombre del Estudiante
-            </FormLabel>
-            <Input id='first-name' placeholder='Nombre del estudiante' />
-          </FormControl>
 
           <FormControl mr='5%'>
             <FormLabel htmlFor='last-name' fontWeight='bold'>
               Cedula
             </FormLabel>
             <Input id='last-name' placeholder='Cedula' />
+          </FormControl>
+
+          <FormControl mr='5%'>
+            <FormLabel htmlFor='first-name' fontWeight='bold' textOverflow='ellipsis'>
+              Nombre del Estudiante
+            </FormLabel>
+            <Input id='first-name' placeholder='Nombre del estudiante' />
           </FormControl>
 
           <FormControl>
