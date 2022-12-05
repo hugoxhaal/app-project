@@ -17,24 +17,26 @@ import {
   InputRightElement
 } from '@chakra-ui/react'
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
-import { useLocalStorage } from '../../hooks/useLocalStorage'
+import { useAuth } from '../../hooks/useAuth'
 import { useRouter } from 'next/navigation'
 
 const LoginForm = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
     mode: 'onBlur'
   })
+
   const router = useRouter()
-
-  const [_, setUser] = useLocalStorage('user')
-  const [_2, setLoginDate] = useLocalStorage('loginDate')
-
+  const { signin } = useAuth()
   const [showPassword, setShowPassword] = useState(false)
   const handleClickShow = () => setShowPassword(!showPassword)
 
-  const onSubmit = data => {
-    setUser(data.email)
-    setLoginDate(new Date())
+  const onSubmit = (data) => {
+    if (errors.length > 0) return
+    signin(data.email, data.password)
     router.push('/estudiantes')
   }
 
@@ -63,9 +65,16 @@ const LoginForm = () => {
               <FormControl id='email'>
                 <FormLabel>Correo electrónico</FormLabel>
                 <Input
-                  autoComplete='off' {...register('email', {
-                    required: { value: true, message: 'Este campo es requerido' },
-                    pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i, message: 'Debe ingresar un correo electrónico válido' }
+                  autoComplete='off'
+                  {...register('email', {
+                    required: {
+                      value: true,
+                      message: 'Este campo es requerido'
+                    },
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                      message: 'Debe ingresar un correo electrónico válido'
+                    }
                   })}
                 />
               </FormControl>
@@ -77,7 +86,10 @@ const LoginForm = () => {
                     type={showPassword ? 'text' : 'password'}
                     placeholder='Enter password'
                     {...register('password', {
-                      required: { value: true, message: 'Este campo es requerido' }
+                      required: {
+                        value: true,
+                        message: 'Este campo es requerido'
+                      }
                     })}
                   />
                   <InputRightElement width='4.5rem'>

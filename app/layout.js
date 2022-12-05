@@ -1,13 +1,13 @@
-import Layout from './components/layout'
+import Providers from './providers'
 
 export default function RootLayout ({ children }) {
   return (
     <html lang='es'>
       <head />
       <body>
-        <Layout>
+        <Providers>
           {children}
-        </Layout>
+        </Providers>
       </body>
     </html>
   )

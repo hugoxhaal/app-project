@@ -6,3 +6,91 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Users {
+  id            Int             @id @default(autoincrement())
+  email         String          @unique
+  fullName      String
+  Roles         Roles           @relation(fields: [rolId], references: [id])
+  rolId         Int
+  createdDt     DateTime        @default(now())
+  createdBy     String
+  updatedDt     DateTime?
+  updatedBy     String?
+  Inscriptions  Inscriptions[]
+  Califications Califications[]
+}
+
+model Roles {
+  id        Int       @id @default(autoincrement())
+  rolName   String    @unique
+  Users     Users[]
+  createdDt DateTime  @default(now())
+  createdBy String
+  updatedDt DateTime?
+  updatedBy String?
+}
+
+model Students {
+  id            Int             @id @default(autoincrement())
+  name          String
+  cedula        String          @unique
+  createdDt     DateTime        @default(now())
+  createdBy     String
+  updatedDt     DateTime?
+  updatedBy     String?
+  Inscriptions  Inscriptions[]
+  Califications Califications[]
+}
+
+model Periods {
+  id            Int             @id @default(autoincrement())
+  periodName    String          @unique
+  Subjects      Subjects[]
+  createdDt     DateTime        @default(now())
+  createdBy     String
+  updatedDt     DateTime?
+  updatedBy     String?
+  Inscriptions  Inscriptions[]
+  Califications Califications[]
+}
+
+model Subjects {
+  id          Int       @id @default(autoincrement())
+  subjectName String    @unique
+  Periods     Periods   @relation(fields: [periodId], references: [id])
+  periodId    Int
+  createdDt   DateTime  @default(now())
+  createdBy   String
+  updatedDt   DateTime?
+  updatedBy   String?
+}
+
+model Inscriptions {
+  id        Int       @id @default(autoincrement())
+  Students  Students  @relation(fields: [studentId], references: [id])
+  studentId Int
+  Users     Users     @relation(fields: [userId], references: [id])
+  userId    Int
+  Periods   Periods   @relation(fields: [periodId], references: [id])
+  periodId  Int
+  createdDt DateTime  @default(now())
+  createdBy String
+  updatedDt DateTime?
+  updatedBy String?
+}
+
+model Califications {
+  id           Int       @id @default(autoincrement())
+  calification Int
+  Periods      Periods   @relation(fields: [periodId], references: [id])
+  periodId     Int
+  Students     Students  @relation(fields: [studentId], references: [id])
+  studentId    Int
+  Users        Users     @relation(fields: [userId], references: [id])
+  userId       Int
+  createdDt    DateTime  @default(now())
+  createdBy    String
+  updatedDt    DateTime?
+  updatedBy    String?
+}

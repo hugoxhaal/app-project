@@ -10,22 +10,27 @@
   },
   "dependencies": {
     "@chakra-ui/icons": "2.0.12",
-    "@chakra-ui/react": "2.4.1",
-    "@emotion/react": "11",
-    "@emotion/styled": "11",
-    "@prisma/client": "^4.6.1",
+    "@chakra-ui/react": "2.4.2",
+    "@chakra-ui/system": "^2.3.4",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@prisma/client": "4.6.1",
     "eslint": "8.27.0",
     "eslint-config-next": "13.0.3",
-    "framer-motion": "6",
+    "framer-motion": "^6.5.1",
     "next": "13.0.3",
     "react": "18.2.0",
+    "react-data-table-component": "^7.5.3",
     "react-dom": "18.2.0",
-    "react-hook-form": "7.39.4"
+    "react-hook-form": "7.39.4",
+    "styled-components": "^5.3.6"
   },
   "devDependencies": {
+    "@babel/core": "^7.20.5",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-react": "7.31.10",
     "prisma": "4.6.1",
-    "standard": "17.0.0"
+    "standard": "17.0.0",
+    "typescript": "^4.9.3"
   }
 }
