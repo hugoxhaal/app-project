@@ -1,23 +1,28 @@
+import axios from 'axios'
 import React from 'react'
-import Register from '../components/register-form/Register'
-import TableMaster from '../components/table-form/TableMaster'
+import Register from './components/register-form/Register'
+import TableMaster from './components/table-form/TableMaster'
 
-const columns = [
-  { dataIndex: 'studentName', name: 'Nombre del Estudiante' },
-  { dataIndex: 'cedula', name: 'Cedula' },
-  { dataIndex: 'registerDate', name: 'Fecha de Registro', isNumeric: true }
-]
+const getData = async () => {
+  try {
+    const res = await axios.get(`${process.env.API_URL}/api/students`)
+    if (res.statusText === 'OK') {
+      return res.data
+    } else {
+      return []
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
 
-const data = [
-  { studentName: 'Pedro Perez', cedula: '12.123.123', registerDate: Date() },
-  { studentName: 'Manuel Lopez', cedula: '21.123.123', registerDate: Date() }
-]
+export default async function page () {
+  const data = await getData()
 
-export default function page () {
   return (
     <>
       <Register />
-      <TableMaster columns={columns} data={data} />
+      <TableMaster data={data} />
     </>
   )
 }

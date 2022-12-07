@@ -9,20 +9,19 @@ import {
   FormLabel,
   Input,
   Center,
-  Spinner
+  Select
 } from '@chakra-ui/react'
 import axios from 'axios'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 
-const Register = () => {
+const Register = ({ dataPeriods }) => {
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm()
   const router = useRouter()
   const onSubmit = async (data) => {
     if (errors.length > 0) return
     try {
-      const res = await axios.post('/api/periods/create', { ...data, createdBy: 'admin' })
-
+      const res = await axios.post('/api/subjects/create', { ...data, createdBy: 'admin' })
       if (res.statusText === 'OK') {
         router.refresh()
       } else {
@@ -34,18 +33,6 @@ const Register = () => {
         console.log('El registro no se puede duplicar')
       }
     }
-  }
-
-  if (isSubmitting) {
-    return (
-      <Spinner
-        thickness='4px'
-        speed='0.65s'
-        emptyColor='gray.200'
-        color='blue.500'
-        size='xl'
-      />
-    )
   }
 
   return (
@@ -60,20 +47,36 @@ const Register = () => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <Heading w='100%' textAlign='center' fontWeight='bold' mb='3%' fontSize={32}>
-        Periodo
+        Materias
       </Heading>
       <Flex>
 
         <FormControl mr='5%'>
-          <FormLabel htmlFor='periodName' fontWeight='bold' textOverflow='ellipsis'>
-            Nombre del Periodo
+          <FormLabel htmlFor='subjectName' fontWeight='bold' textOverflow='ellipsis'>
+            Nombre de la materia
           </FormLabel>
           <Input
-            placeholder='Nombre del periodo' {...register('periodName', {
+            placeholder='Nombre de la materia' {...register('subjectName', {
               required: 'Campo requerido',
               minLength: { value: 4, message: 'El campo debe tener minimo 3 caracteres' }
             })}
           />
+
+        </FormControl>
+        <FormControl mr='5%'>
+          <FormLabel htmlFor='subjectName' fontWeight='bold' textOverflow='ellipsis'>
+            Periodo
+          </FormLabel>
+          <Select
+            placeholder='Selecciona'
+            {...register('periodId', {
+              required: 'Campo requerido'
+            })}
+          >
+            {dataPeriods.map(el => (
+              <option key={el.id} value={el.id}>{el.periodName}</option>
+            ))}
+          </Select>
         </FormControl>
 
         <Center h='100px' color='white'>

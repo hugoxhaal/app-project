@@ -33,7 +33,7 @@ model Roles {
 
 model Students {
   id            Int             @id @default(autoincrement())
-  name          String
+  studentName   String
   cedula        String          @unique
   createdDt     DateTime        @default(now())
   createdBy     String
@@ -44,26 +44,26 @@ model Students {
 }
 
 model Periods {
+  id           Int            @id @default(autoincrement())
+  periodName   String         @unique
+  Subjects     Subjects[]
+  createdDt    DateTime       @default(now())
+  createdBy    String
+  updatedDt    DateTime?
+  updatedBy    String?
+  Inscriptions Inscriptions[]
+}
+
+model Subjects {
   id            Int             @id @default(autoincrement())
-  periodName    String          @unique
-  Subjects      Subjects[]
+  subjectName   String          @unique
+  Periods       Periods         @relation(fields: [periodId], references: [id])
+  periodId      Int
   createdDt     DateTime        @default(now())
   createdBy     String
   updatedDt     DateTime?
   updatedBy     String?
-  Inscriptions  Inscriptions[]
   Califications Califications[]
-}
-
-model Subjects {
-  id          Int       @id @default(autoincrement())
-  subjectName String    @unique
-  Periods     Periods   @relation(fields: [periodId], references: [id])
-  periodId    Int
-  createdDt   DateTime  @default(now())
-  createdBy   String
-  updatedDt   DateTime?
-  updatedBy   String?
 }
 
 model Inscriptions {
@@ -83,8 +83,8 @@ model Inscriptions {
 model Califications {
   id           Int       @id @default(autoincrement())
   calification Int
-  Periods      Periods   @relation(fields: [periodId], references: [id])
-  periodId     Int
+  Subjects     Subjects  @relation(fields: [subjectId], references: [id])
+  subjectId    Int
   Students     Students  @relation(fields: [studentId], references: [id])
   studentId    Int
   Users        Users     @relation(fields: [userId], references: [id])

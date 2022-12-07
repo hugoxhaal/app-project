@@ -4,10 +4,14 @@ import React from 'react'
 import DataTable from 'react-data-table-component'
 
 const columns = [
-  { selector: row => row.periodName, name: 'Periodo', sortable: true }
+  { selector: row => row.Students.studentName, name: 'Estudiante', sortable: true },
+  { selector: row => row.Subjects.subjectName, name: 'Materias', sortable: true },
+  { selector: row => row.calification, name: 'Calificacion', sortable: true }
+
 ]
 
 const TableMaster = ({ data }) => {
+  console.log(data)
   return (
     <Box
       rounded='md'

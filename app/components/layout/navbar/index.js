@@ -19,7 +19,11 @@ import {
 import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons'
 import Logo from './Logo'
 
-const allLinks = [{ name: 'Inicio', path: '/' }, { name: 'Estudiantes', path: '/estudiantes' }, { name: 'Notas', path: '/notas' }]
+const allLinks = [{ name: 'Periodos', path: '/periodos' },
+  { name: 'Estudiantes', path: '/estudiantes' },
+  { name: 'Materias', path: '/materias' },
+  { name: 'Inscripciones', path: '/inscripciones' },
+  { name: 'Calificaciones', path: '/calificaciones' }]
 
 export default function NavBar ({ children }) {
   const { isOpen, onOpen, onClose } = useDisclosure()

@@ -21,8 +21,7 @@ const Register = () => {
   const onSubmit = async (data) => {
     if (errors.length > 0) return
     try {
-      const res = await axios.post('/api/periods/create', { ...data, createdBy: 'admin' })
-
+      const res = await axios.post('/api/students/create', { ...data, createdBy: 'admin' })
       if (res.statusText === 'OK') {
         router.refresh()
       } else {
@@ -60,18 +59,31 @@ const Register = () => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <Heading w='100%' textAlign='center' fontWeight='bold' mb='3%' fontSize={32}>
-        Periodo
+        Estudiantes
       </Heading>
       <Flex>
 
         <FormControl mr='5%'>
-          <FormLabel htmlFor='periodName' fontWeight='bold' textOverflow='ellipsis'>
-            Nombre del Periodo
+          <FormLabel htmlFor='studentName' fontWeight='bold' textOverflow='ellipsis'>
+            Estudiante
           </FormLabel>
           <Input
-            placeholder='Nombre del periodo' {...register('periodName', {
+            placeholder='Nombre del estudiante' {...register('studentName', {
               required: 'Campo requerido',
-              minLength: { value: 4, message: 'El campo debe tener minimo 3 caracteres' }
+              minLength: { value: 2, message: 'El campo debe tener minimo 2 caracteres' }
+            })}
+          />
+
+        </FormControl>
+        <FormControl mr='5%'>
+          <FormLabel htmlFor='cedula' fontWeight='bold' textOverflow='ellipsis'>
+            Cedula
+          </FormLabel>
+          <Input
+            type='number'
+            placeholder='Cedula' {...register('cedula', {
+              required: 'Campo requerido',
+              minLength: { value: 6, message: 'El campo debe tener minimo 6 caracteres' }
             })}
           />
         </FormControl>

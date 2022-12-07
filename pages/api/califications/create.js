@@ -2,14 +2,27 @@ import prisma from '../../../lib/prisma'
 
 // POST /api/califications
 export default async function handle (req, res) {
-  const { studentId, userId, periodId, createdBy } = req.body
-  const result = await prisma.califications.create({
+  const { studentId, subjects, userId, createdBy } = req.body
+
+  const createCalifications = subjects.map((subject) => prisma.califications.create({
     data: {
-      studentId,
-      userId,
-      periodId,
+      calification: Number(subject.calification),
+      Subjects: { connect: { id: Number(subject.subjectId) } },
+      Students: { connect: { id: Number(studentId) } },
+      Users: { connect: { id: Number(userId) } },
       createdBy
     }
-  })
-  res.json(result)
+  }))
+
+  await Promise.all(createCalifications)
+
+  // const result = await prisma.califications.create({
+  //   data: {
+  //     calification,
+  //     studentId,
+  //     userId: 3,
+  //     createdBy: 'admin'
+  //   }
+  // })
+  res.json({ status: 'OK' })
 }
