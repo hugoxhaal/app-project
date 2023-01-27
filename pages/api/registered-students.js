@@ -10,6 +10,7 @@ export default async function handler (req, res) {
       }
     },
     where: {
+      isActive: true,
       Inscriptions: { some: {} }
     },
     orderBy: {

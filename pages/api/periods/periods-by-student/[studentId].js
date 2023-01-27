@@ -4,27 +4,19 @@ import { prisma } from '../../../../lib/prisma'
 export default async function handle (req, res) {
   const { studentId } = req.query
   try {
-    const hasInscriptions = await prisma.inscriptions.count({
-      where: { studentId: Number(studentId), Periods: { isClosed: false, OR: { isActive: true } } }
-    })
-
-    console.log(hasInscriptions)
-
-    if (!hasInscriptions) {
-      const result = await prisma.periods.findMany({
-        where: {
-          Inscriptions: {
-            none: { studentId: Number(studentId) }
-          }
+    const result = await prisma.periods.findMany({
+      where: {
+        Inscriptions: {
+          none: { studentId: Number(studentId) }
         },
-        include: {
-          Inscriptions: true
-        }
-      })
-      return res.json(result)
-    }
-
-    res.json([])
+        isClosed: false,
+        isActive: true
+      },
+      include: {
+        Inscriptions: true
+      }
+    })
+    return res.json(result)
   } catch (err) {
     res.status(422).json(err)
   }

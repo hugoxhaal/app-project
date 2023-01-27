@@ -10,13 +10,14 @@ import {
   Portal
 } from '@chakra-ui/react'
 import axios from 'axios'
+import moment from 'moment'
 import { useRouter } from 'next/navigation'
 import React, { useState, useTransition } from 'react'
 import DataTable from 'react-data-table-component'
 
 const columns = [
   { selector: row => row.subjectName, name: 'Materia', sortable: true },
-  { selector: row => row.Periods.period, name: 'Periodo', sortable: true },
+  { selector: row => { return row.Periods.period + ' Periodo ' + moment(row.Periods.periodYear).format('YYYY') }, name: 'Periodo', sortable: true },
   { cell: (row) => <MenuComponent row={row} />, name: 'Acciones' }
 ]
 

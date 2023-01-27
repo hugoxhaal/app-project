@@ -7,9 +7,10 @@ export default async function handle (req, res) {
     const result = await prisma.periods.findMany({
       where: {
         Subjects: {
-          some: { Califications: { none: {} } }
+          some: { Califications: {} }
         },
         isActive: true,
+        isClosed: false,
         Inscriptions: { some: { studentId: Number(studentId) } }
       },
       include: {
