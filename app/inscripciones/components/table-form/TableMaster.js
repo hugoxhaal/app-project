@@ -1,37 +1,31 @@
 'use client'
-import { ChevronDownIcon } from '@chakra-ui/icons'
 import {
-  Box,
-  Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Portal
+  Box
+
 } from '@chakra-ui/react'
+import moment from 'moment'
 import React from 'react'
 import DataTable from 'react-data-table-component'
 
 const columns = [
-  { selector: row => row.Periods.period, name: 'Periodo', sortable: true },
-  { selector: row => row.Students.studentName, name: 'Estudiante', sortable: true },
-  { cell: (row) => <MenuComponent row={row} />, name: 'Acciones' }
+  { selector: row => { return row.Periods.period + ' Periodo` ' + moment(row.Periods.periodYear).format('YYYY') }, name: 'Periodo', sortable: true },
+  { selector: row => row.Students.studentName, name: 'Estudiante', sortable: true }
 ]
 
-const MenuComponent = ({ row }) => {
-  return (
-    <Menu>
-      <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-        Opciones
-      </MenuButton>
-      <Portal>
-        <MenuList>
-          <MenuItem>Eliminar Inscripcion</MenuItem>
-        </MenuList>
-      </Portal>
-    </Menu>
-  )
-}
+// const MenuComponent = ({ row }) => {
+//   return (
+//     <Menu>
+//       <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+//         Opciones
+//       </MenuButton>
+//       <Portal>
+//         <MenuList>
+//           <MenuItem>Eliminar Inscripcion</MenuItem>
+//         </MenuList>
+//       </Portal>
+//     </Menu>
+//   )
+// }
 
 const TableMaster = ({ data }) => {
   return (
