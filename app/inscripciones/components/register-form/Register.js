@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Box,
   Button,
@@ -14,10 +14,14 @@ import {
 import axios from 'axios'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
+import moment from 'moment'
 
-const Register = ({ dataStudents, dataPeriods }) => {
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm()
+const Register = ({ dataStudents }) => {
   const router = useRouter()
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm()
+  const [selectedStudent, setSelectedStudent] = useState('')
+  const [dataPeriods, setDataPeriods] = useState([])
+
   const onSubmit = async (data) => {
     if (errors.length > 0) return
     try {
@@ -34,6 +38,25 @@ const Register = ({ dataStudents, dataPeriods }) => {
       }
     }
   }
+
+  console.log('periodsd, ', dataPeriods)
+
+  useEffect(() => {
+    async function loadPeriodsByStudent () {
+      console.log('x', selectedStudent)
+      try {
+        const res = await axios.get(`/api/periods/periods-by-student/${selectedStudent}`)
+        if (res.statusText === 'OK') {
+          setDataPeriods(res.data)
+        } else {
+          setDataPeriods([])
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    if (selectedStudent !== '') { loadPeriodsByStudent(selectedStudent) }
+  }, [selectedStudent])
 
   return (
     <Box
@@ -59,7 +82,9 @@ const Register = ({ dataStudents, dataPeriods }) => {
             {...register('studentId', {
               required: 'Campo requerido'
             })}
+            onClick={(e) => setSelectedStudent(e.target.value)}
           >
+            <option value=''>Selecciona</option>
             {dataStudents.map(student => (
               <option key={student.id} value={student.id}>{student.studentName}</option>
 
@@ -75,9 +100,8 @@ const Register = ({ dataStudents, dataPeriods }) => {
               required: 'Campo requerido'
             })}
           >
-            {dataPeriods.map(period => (
-              <option key={period.id} value={period.id}>{period.periodName}</option>
-
+            {dataPeriods?.map(el => (
+              <option key={el.id} value={el.id}>{el?.period} Periodo {moment(el.periodYear).format('YYYY')}</option>
             ))}
           </Select>
         </FormControl>

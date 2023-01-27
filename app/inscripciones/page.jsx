@@ -29,27 +29,13 @@ const loadStudents = async () => {
   }
 }
 
-const loadPeriods = async () => {
-  try {
-    const res = await axios.get(`${process.env.API_URL}/api/periods`)
-    if (res.statusText === 'OK') {
-      return res.data
-    } else {
-      return []
-    }
-  } catch (error) {
-    console.error(error)
-  }
-}
-
 export default async function page () {
   const data = await getData()
   const dataStudents = await loadStudents()
-  const dataPeriods = await loadPeriods()
 
   return (
     <>
-      <Register dataStudents={dataStudents} dataPeriods={dataPeriods} />
+      <Register dataStudents={dataStudents} />
       <TableMaster data={data} />
     </>
   )

@@ -1,4 +1,5 @@
 // Hook (use-auth.js)
+import axios from 'axios'
 import React, { useState, useEffect, useContext, createContext } from 'react'
 import { useLocalStorage } from './useLocalStorage'
 
@@ -29,9 +30,15 @@ function useProvideAuth () {
 
   // Wrap any Firebase methods we want to use making sure ...
   // ... to save the user to state.
-  const signin = (email, password) => {
-    setUserLS(email)
-    setLoginDateLS(new Date())
+  const signin = async (email, password) => {
+    const response = await axios.post('/api/login', { email, password })
+    console.log('res', response)
+    if (response.data) {
+      setUserLS(email)
+      setLoginDateLS(new Date())
+      return 'OK'
+    }
+    return 'KO'
   }
 
   const signup = (email, password) => {}

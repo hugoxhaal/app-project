@@ -49,7 +49,7 @@ const Register = () => {
       <Flex>
 
         <FormControl mr='5%'>
-          <FormLabel htmlFor='periodName' fontWeight='bold' textOverflow='ellipsis'>
+          <FormLabel htmlFor='subjectName' fontWeight='bold' textOverflow='ellipsis'>
             Nombre de la materia
           </FormLabel>
           <Input

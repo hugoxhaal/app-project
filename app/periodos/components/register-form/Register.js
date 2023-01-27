@@ -7,18 +7,20 @@ import {
   Flex,
   FormControl,
   FormLabel,
-  Input,
   Center,
-  Spinner
+  Spinner,
+  Select
 } from '@chakra-ui/react'
 import axios from 'axios'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
+import DatePicker from '../../../components/date-picker'
 
 const Register = () => {
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm()
+  const { register, handleSubmit, control, formState: { errors, isSubmitting } } = useForm()
   const router = useRouter()
   const onSubmit = async (data) => {
+    console.log(data)
     if (errors.length > 0) return
     try {
       const res = await axios.post('/api/periods/create', { ...data, createdBy: 'admin' })
@@ -65,15 +67,39 @@ const Register = () => {
       <Flex>
 
         <FormControl mr='5%'>
-          <FormLabel htmlFor='periodName' fontWeight='bold' textOverflow='ellipsis'>
-            Nombre del Periodo
+          <FormLabel htmlFor='periodYear' fontWeight='bold' textOverflow='ellipsis'>
+            Año del Periodo
           </FormLabel>
-          <Input
-            placeholder='Nombre del periodo' {...register('periodName', {
-              required: 'Campo requerido',
-              minLength: { value: 4, message: 'El campo debe tener minimo 3 caracteres' }
-            })}
+
+          <Controller
+            control={control}
+            name='periodYear'
+            render={
+              ({ field: { onChange, value } }) => (
+                <DatePicker
+                  value={value}
+                  onChange={onChange}
+                />
+              )
+          }
           />
+
+        </FormControl>
+
+        <FormControl mr='5%'>
+          <FormLabel htmlFor='period' fontWeight='bold' textOverflow='ellipsis'>
+            Periodo
+          </FormLabel>
+          <Select
+            placeholder='Selecciona'
+            {...register('period', {
+              required: 'Campo requerido'
+            })}
+          >
+            {[1, 2, 3, 4, 5, 6].map((el, i) => (
+              <option key={i} value={el}>{el} Periodo</option>
+            ))}
+          </Select>
         </FormControl>
 
         <Center h='100px' color='white'>

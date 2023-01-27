@@ -14,6 +14,7 @@ import {
 import axios from 'axios'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
+import moment from 'moment'
 
 const Register = ({ dataPeriods }) => {
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm()
@@ -74,7 +75,7 @@ const Register = ({ dataPeriods }) => {
             })}
           >
             {dataPeriods.map(el => (
-              <option key={el.id} value={el.id}>{el.periodName}</option>
+              <option key={el.id} value={el.id}>{el.period} Periodo {moment(el.periodYear).format('YYYY')}</option>
             ))}
           </Select>
         </FormControl>

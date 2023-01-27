@@ -1,17 +1,14 @@
 import { prisma } from '../../../lib/prisma'
 
-// POST /api/periods
 export default async function handle (req, res) {
-  const { periodYear, period, createdBy } = req.body
+  const { studentId } = req.query
+
   try {
-    const result = await prisma.periods.create({
-      data: {
-        periodYear,
-        period,
-        createdBy
+    const result = await prisma.inscriptions.delete({
+      where: {
+        periodId_studentId: { studentId: Number(studentId) }
       }
     })
-
     res.json(result)
   } catch (err) {
     res.status(422).json(err)

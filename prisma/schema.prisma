@@ -11,8 +11,10 @@ model Users {
   id            Int             @id @default(autoincrement())
   email         String          @unique
   fullName      String
+  password      String
   Roles         Roles           @relation(fields: [rolId], references: [id])
   rolId         Int
+  isActive      Boolean         @default(true)
   createdDt     DateTime        @default(now())
   createdBy     String
   updatedDt     DateTime?
@@ -35,6 +37,7 @@ model Students {
   id            Int             @id @default(autoincrement())
   studentName   String
   cedula        String          @unique
+  isActive      Boolean         @default(true)
   createdDt     DateTime        @default(now())
   createdBy     String
   updatedDt     DateTime?
@@ -45,18 +48,23 @@ model Students {
 
 model Periods {
   id           Int            @id @default(autoincrement())
-  periodName   String         @unique
+  periodYear   DateTime
+  period       String
+  isActive     Boolean        @default(true)
+  isClosed     Boolean        @default(false)
   Subjects     Subjects[]
   createdDt    DateTime       @default(now())
   createdBy    String
   updatedDt    DateTime?
   updatedBy    String?
   Inscriptions Inscriptions[]
+
+  @@unique([periodYear, period])
 }
 
 model Subjects {
   id            Int             @id @default(autoincrement())
-  subjectName   String          @unique
+  subjectName   String
   Periods       Periods         @relation(fields: [periodId], references: [id])
   periodId      Int
   createdDt     DateTime        @default(now())
@@ -64,6 +72,8 @@ model Subjects {
   updatedDt     DateTime?
   updatedBy     String?
   Califications Califications[]
+
+  @@unique([subjectName, periodId])
 }
 
 model Inscriptions {
@@ -78,12 +88,14 @@ model Inscriptions {
   createdBy String
   updatedDt DateTime?
   updatedBy String?
+
+  @@unique([periodId, studentId])
 }
 
 model Califications {
   id           Int       @id @default(autoincrement())
   calification Int
-  Subjects     Subjects  @relation(fields: [subjectId], references: [id])
+  Subjects     Subjects  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
   subjectId    Int
   Students     Students  @relation(fields: [studentId], references: [id])
   studentId    Int

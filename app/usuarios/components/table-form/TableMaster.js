@@ -4,7 +4,7 @@ import React from 'react'
 import DataTable from 'react-data-table-component'
 
 const columns = [
-  { selector: row => row.periodName, name: 'Periodo', sortable: true }
+  { selector: row => row.period, name: 'Periodo', sortable: true }
 ]
 
 const TableMaster = ({ data }) => {

@@ -1,11 +1,12 @@
 
 import { prisma } from '../../lib/prisma'
 
-// GET /api/users
+// GET /api/login
 export default async function handler (req, res) {
   const usersResult = await prisma.users.findFirst({
     where: {
-      id: 3
+      email: req.body.email,
+      password: req.body.password
     }
   })
   res.json(usersResult)

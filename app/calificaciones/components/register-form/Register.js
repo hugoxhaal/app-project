@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Box,
   Button,
@@ -14,15 +14,18 @@ import {
 import axios from 'axios'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
+import moment from 'moment'
 
 const Register = ({ dataStudents }) => {
   const { register, handleSubmit, control, setValue, formState: { errors, isSubmitting } } = useForm()
   const { fields, append, remove } = useFieldArray({ name: 'subjects', control })
 
   const [subjects, setSubjects] = useState([])
+  const [selectedStudent, setSelectedStudent] = useState('')
+  const [dataPeriods, setDataPeriods] = useState([])
+
   const router = useRouter()
   const onSubmit = async (data) => {
-    console.log('ata', data)
     if (errors.length > 0) return
     try {
       const res = await axios.post('/api/califications/create', { ...data, userId: 3, createdBy: 'admin' })
@@ -35,12 +38,30 @@ const Register = ({ dataStudents }) => {
       console.error(error)
     }
   }
-  const filterStudent = (studentId) => {
-    console.log('studentId: ', studentId)
-    const filterData = [...dataStudents]
-    const students = filterData.find(student => student.id === Number(studentId))
-    setSubjects(students?.Inscriptions[0].Periods.Subjects)
+
+  const filterSubjects = (periodId) => {
+    const filterData = [...dataPeriods]
+    const inscription = filterData.find(period => period.id === Number(periodId))
+    setSubjects(inscription?.Subjects)
   }
+
+  useEffect(() => {
+    async function loadPeriodsByStudent () {
+      try {
+        const res = await axios.get(`/api/periods/periods-without-califications/${selectedStudent}`)
+        console.log('resdatadd', res)
+
+        if (res.statusText === 'OK') {
+          setDataPeriods(res.data)
+        } else {
+          setDataPeriods([])
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    if (selectedStudent !== '') { loadPeriodsByStudent(selectedStudent) }
+  }, [selectedStudent])
 
   return (
     <Box
@@ -67,10 +88,29 @@ const Register = ({ dataStudents }) => {
             {...register('studentId', {
               required: 'Campo requerido'
             })}
-            onClick={(e) => filterStudent(e.target.value)}
+            onClick={(e) => setSelectedStudent(e.target.value)}
           >
             {dataStudents.map(student => (
               <option key={student.id} value={student.id}>{student.studentName}</option>
+            ))}
+          </Select>
+
+        </FormControl>
+
+        <FormControl mr='5%'>
+          <FormLabel htmlFor='periodId' fontWeight='bold' textOverflow='ellipsis'>
+            Periodo
+          </FormLabel>
+          <Select
+            disabled={!dataPeriods || dataPeriods?.length === 0}
+            placeholder='Selecciona'
+            {...register('periodId', {
+              required: 'Campo requerido'
+            })}
+            onClick={(e) => filterSubjects(e.target.value)}
+          >
+            {dataPeriods?.map(insc => (
+              <option key={insc?.id} value={insc?.id}>{insc?.period} Periodo {moment(insc?.Periods?.periodYear).format('YYYY')}</option>
             ))}
           </Select>
 

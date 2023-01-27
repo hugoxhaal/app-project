@@ -34,10 +34,11 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false)
   const handleClickShow = () => setShowPassword(!showPassword)
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     if (errors.length > 0) return
-    signin(data.email, data.password)
-    router.push('/estudiantes')
+    const response = await signin(data.email, data.password)
+    console.log(response)
+    if (response === 'OK') { router.push('/estudiantes') }
   }
 
   return (
