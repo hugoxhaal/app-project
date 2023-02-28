@@ -36,19 +36,18 @@ const ExpandedComponent = ({ data, dataStudent }) => {
 
   const filterSubjects = useCallback(
     (periodId) => {
-      const filterData = dataStudent[0]
+      const idStudent = dataStudent.findIndex(student => student.id === data?.data?.id)
+      const filterData = dataStudent[idStudent]
       const inscription = filterData?.Califications?.filter(
         (period) => period.Subjects.periodId === Number(periodId)
       )
 
       setSubjects(inscription)
     },
-    [dataStudent]
+    [dataStudent, data]
   )
 
   const handleDelete = async ({ subjects }) => {
-    console.log(subjects)
-
     setIsFetching(true)
     try {
       const res = await axios.post('/api/califications/delete', { subjects })
@@ -71,6 +70,8 @@ const ExpandedComponent = ({ data, dataStudent }) => {
     filterStudent(data.data.id)
   }, [data.data.id, filterStudent])
 
+  console.log('test', subjects)
+
   return (
     <Flex align='center' justify='center'>
       <Box width='80%'>
@@ -90,7 +91,7 @@ const ExpandedComponent = ({ data, dataStudent }) => {
               {inscriptions?.map((insc) => (
                 <option key={insc?.Periods?.id} value={insc?.Periods?.id}>
                   {insc?.Periods?.period} Periodo{' '}
-                  {moment(insc?.Periods?.periodYear).format('YYYY')}
+                  {moment(insc?.Periods?.periodYear).format('YYYY')}{' '}- {insc?.Periods?.semester}
                 </option>
               ))}
             </Select>
@@ -116,11 +117,11 @@ const ExpandedComponent = ({ data, dataStudent }) => {
                 >
                   Materia
                 </FormLabel>
-                {subjects?.map((subject) => (
+                {subjects?.map((subject, i) => (
                   <Input
                     disabled
                     defaultValue={subject.Subjects.subjectName}
-                    key={subject.Subjects.id}
+                    key={i}
                     placeholder='Materia'
                   />
                 ))}
@@ -134,7 +135,7 @@ const ExpandedComponent = ({ data, dataStudent }) => {
                   <Input
                     disabled
                     defaultValue={item.calification}
-                    key={item.Subjects.id}
+                    key={i}
                     placeholder='Calificacion'
                   />
                 ))}

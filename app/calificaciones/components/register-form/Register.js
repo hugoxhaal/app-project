@@ -62,8 +62,6 @@ const Register = ({ dataStudents }) => {
     if (selectedStudent !== '') { loadPeriodsByStudent(selectedStudent) }
   }, [selectedStudent])
 
-  console.log('first', dataPeriods)
-
   return (
     <Box
       rounded='md'
