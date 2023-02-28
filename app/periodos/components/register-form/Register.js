@@ -102,6 +102,22 @@ const Register = () => {
           </Select>
         </FormControl>
 
+        <FormControl mr='5%'>
+          <FormLabel htmlFor='period' fontWeight='bold' textOverflow='ellipsis'>
+            Semestre
+          </FormLabel>
+          <Select
+            placeholder='Selecciona'
+            {...register('semester', {
+              required: 'Campo requerido'
+            })}
+          >
+            {[1, 2].map((el, i) => (
+              <option key={i} value={el}>{el}</option>
+            ))}
+          </Select>
+        </FormControl>
+
         <Center h='100px' color='white'>
           <Button colorScheme='teal' isLoading={isSubmitting} type='submit'>Registrar</Button>
         </Center>

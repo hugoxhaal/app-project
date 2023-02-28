@@ -1,5 +1,13 @@
 'use client'
-import { Box, FormControl, FormLabel, Select, Flex, Input, Button } from '@chakra-ui/react'
+import {
+  Box,
+  FormControl,
+  FormLabel,
+  Select,
+  Flex,
+  Input,
+  Button
+} from '@chakra-ui/react'
 import axios from 'axios'
 import moment from 'moment'
 import { useRouter } from 'next/navigation'
@@ -15,18 +23,28 @@ const ExpandedComponent = ({ data, dataStudent }) => {
 
   // const isMutating = isFetching || isPending
 
-  const filterStudent = useCallback((studentId) => {
-    const filterData = [...dataStudent]
-    const students = filterData.find(student => student.id === Number(studentId))
-    setInscriptions(students?.Inscriptions)
-  }, [dataStudent])
+  const filterStudent = useCallback(
+    (studentId) => {
+      const filterData = [...dataStudent]
+      const students = filterData.find(
+        (student) => student.id === Number(studentId)
+      )
+      setInscriptions(students?.Inscriptions)
+    },
+    [dataStudent]
+  )
 
-  const filterSubjects = useCallback((periodId) => {
-    const filterData = dataStudent[0]
-    const inscription = filterData?.Califications?.filter(period => period.Subjects.periodId === Number(periodId))
+  const filterSubjects = useCallback(
+    (periodId) => {
+      const filterData = dataStudent[0]
+      const inscription = filterData?.Califications?.filter(
+        (period) => period.Subjects.periodId === Number(periodId)
+      )
 
-    setSubjects(inscription)
-  }, [dataStudent])
+      setSubjects(inscription)
+    },
+    [dataStudent]
+  )
 
   const handleDelete = async ({ subjects }) => {
     console.log(subjects)
@@ -54,13 +72,14 @@ const ExpandedComponent = ({ data, dataStudent }) => {
   }, [data.data.id, filterStudent])
 
   return (
-    <Flex
-      align='center'
-      justify='center'
-    >
+    <Flex align='center' justify='center'>
       <Box width='80%'>
         <FormControl mr='5%'>
-          <FormLabel htmlFor='periodId' fontWeight='bold' textOverflow='ellipsis'>
+          <FormLabel
+            htmlFor='periodId'
+            fontWeight='bold'
+            textOverflow='ellipsis'
+          >
             Periodo
           </FormLabel>
           <Flex>
@@ -68,26 +87,36 @@ const ExpandedComponent = ({ data, dataStudent }) => {
               placeholder='Selecciona'
               onClick={(e) => filterSubjects(e.target.value)}
             >
-              {inscriptions?.map(insc => (
-                <option key={insc?.Periods?.id} value={insc?.Periods?.id}>{insc?.Periods?.period} Periodo {moment(insc?.Periods?.periodYear).format('YYYY')}</option>
+              {inscriptions?.map((insc) => (
+                <option key={insc?.Periods?.id} value={insc?.Periods?.id}>
+                  {insc?.Periods?.period} Periodo{' '}
+                  {moment(insc?.Periods?.periodYear).format('YYYY')}
+                </option>
               ))}
             </Select>
-            {subjects.length > 0 && <Button onClick={() => handleDelete({ subjects })}>Eliminar</Button>}
+            {subjects.length > 0 && (
+              <>
+                <Button variant='outline'><a href='./Plantilla_Calificaciones.xlsx' download>Descargar</a></Button>
+                <Button onClick={() => handleDelete({ subjects })}>
+                  Eliminar
+                </Button>
+              </>
+            )}
           </Flex>
         </FormControl>
 
         <FormControl mr='5%'>
-          <Flex
-            align='center'
-            justify='center'
-          >
-
+          <Flex align='center' justify='center'>
             <Flex>
               <FormControl mr='5%'>
-                <FormLabel htmlFor='subjectId' fontWeight='bold' textOverflow='ellipsis'>
+                <FormLabel
+                  htmlFor='subjectId'
+                  fontWeight='bold'
+                  textOverflow='ellipsis'
+                >
                   Materia
                 </FormLabel>
-                {subjects?.map(subject => (
+                {subjects?.map((subject) => (
                   <Input
                     disabled
                     defaultValue={subject.Subjects.subjectName}
@@ -109,17 +138,12 @@ const ExpandedComponent = ({ data, dataStudent }) => {
                     placeholder='Calificacion'
                   />
                 ))}
-
               </FormControl>
             </Flex>
-
           </Flex>
-
         </FormControl>
-
       </Box>
     </Flex>
-
   )
 }
 
@@ -144,7 +168,13 @@ const TableMaster = ({ data, dataPeriods }) => {
         data={data}
         pagination
         expandableRows
-        expandableRowsComponent={(values) => <ExpandedComponent data={values} dataStudent={data} dataPeriods={dataPeriods} />}
+        expandableRowsComponent={(values) => (
+          <ExpandedComponent
+            data={values}
+            dataStudent={data}
+            dataPeriods={dataPeriods}
+          />
+        )}
       />
     </Box>
   )

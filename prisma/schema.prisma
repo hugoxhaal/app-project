@@ -50,6 +50,7 @@ model Periods {
   id           Int            @id @default(autoincrement())
   periodYear   DateTime
   period       String
+  semester     Int
   isActive     Boolean        @default(true)
   isClosed     Boolean        @default(false)
   Subjects     Subjects[]
@@ -59,7 +60,7 @@ model Periods {
   updatedBy    String?
   Inscriptions Inscriptions[]
 
-  @@unique([periodYear, period])
+  @@unique([periodYear, period, semester])
 }
 
 model Subjects {

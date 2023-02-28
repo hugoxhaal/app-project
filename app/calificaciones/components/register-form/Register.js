@@ -49,7 +49,6 @@ const Register = ({ dataStudents }) => {
     async function loadPeriodsByStudent () {
       try {
         const res = await axios.get(`/api/periods/periods-without-califications/${selectedStudent}`)
-        console.log('resdatadd', res)
 
         if (res.statusText === 'OK') {
           setDataPeriods(res.data)
@@ -62,6 +61,8 @@ const Register = ({ dataStudents }) => {
     }
     if (selectedStudent !== '') { loadPeriodsByStudent(selectedStudent) }
   }, [selectedStudent])
+
+  console.log('first', dataPeriods)
 
   return (
     <Box
@@ -110,7 +111,7 @@ const Register = ({ dataStudents }) => {
             onClick={(e) => filterSubjects(e.target.value)}
           >
             {dataPeriods?.map(insc => (
-              <option key={insc?.id} value={insc?.id}>{insc?.period} Periodo {moment(insc?.Periods?.periodYear).format('YYYY')}</option>
+              <option key={insc?.id} value={insc?.id}>{insc?.period} Periodo {moment(insc?.Periods?.periodYear).format('YYYY')} - {insc?.semester}</option>
             ))}
           </Select>
 
@@ -142,6 +143,8 @@ const Register = ({ dataStudents }) => {
               type='number'
               placeholder='Calificacion'
               onChange={() => setValue(`subjects[${i}].subjectId`, item.id)}
+              min={0}
+              max={5}
             />
           ))}
 

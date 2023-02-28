@@ -8,8 +8,10 @@ import React from 'react'
 import DataTable from 'react-data-table-component'
 
 const columns = [
-  { selector: row => { return row.Periods.period + ' Periodo` ' + moment(row.Periods.periodYear).format('YYYY') }, name: 'Periodo', sortable: true },
-  { selector: row => row.Students.studentName, name: 'Estudiante', sortable: true }
+  { selector: row => row.Students.studentName, name: 'Estudiante', sortable: true },
+  { selector: row => moment(row.Periods.periodYear).format('YYYY'), name: 'Año', sortable: true },
+  { selector: row => { return row.Periods.period + ' Periodo ' }, name: 'Periodo', sortable: true },
+  { selector: row => row.Periods.semester, name: 'Semestre', sortable: true }
 ]
 
 // const MenuComponent = ({ row }) => {

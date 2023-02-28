@@ -31,6 +31,13 @@ const columns = [
   },
   {
     selector: (row) => {
+      return row.semester
+    },
+    name: 'Semestre',
+    sortable: true
+  },
+  {
+    selector: (row) => {
       return row.isActive ? 'Activo' : 'Inactivo'
     },
     name: 'Estado del Periodo'

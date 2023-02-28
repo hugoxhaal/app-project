@@ -18,6 +18,7 @@ import DataTable from 'react-data-table-component'
 const columns = [
   { selector: row => row.subjectName, name: 'Materia', sortable: true },
   { selector: row => { return row.Periods.period + ' Periodo ' + moment(row.Periods.periodYear).format('YYYY') }, name: 'Periodo', sortable: true },
+  { selector: row => row.Periods.semester, name: 'Semestre', sortable: true },
   { cell: (row) => <MenuComponent row={row} />, name: 'Acciones' }
 ]
 

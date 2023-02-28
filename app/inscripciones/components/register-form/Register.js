@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useTransition } from 'react'
 import {
   Box,
   Button,
@@ -18,16 +18,22 @@ import moment from 'moment'
 
 const Register = ({ dataStudents }) => {
   const router = useRouter()
+  const [isPending, startTransition] = useTransition()
+  const [isFetching, setIsFetching] = useState(false)
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm()
   const [selectedStudent, setSelectedStudent] = useState('')
   const [dataPeriods, setDataPeriods] = useState([])
 
   const onSubmit = async (data) => {
+    setIsFetching(true)
     if (errors.length > 0) return
     try {
       const res = await axios.post('/api/inscriptions/create', { ...data, userId: 3, createdBy: 'admin' })
+      setIsFetching(false)
       if (res.statusText === 'OK') {
-        router.refresh()
+        startTransition(() => {
+          router.refresh()
+        })
       } else {
         throw new Error('Failed to fetch data')
       }
@@ -39,11 +45,8 @@ const Register = ({ dataStudents }) => {
     }
   }
 
-  console.log('periodsd, ', dataPeriods)
-
   useEffect(() => {
     async function loadPeriodsByStudent () {
-      console.log('x', selectedStudent)
       try {
         const res = await axios.get(`/api/periods/periods-by-student/${selectedStudent}`)
         if (res.statusText === 'OK') {
@@ -101,7 +104,7 @@ const Register = ({ dataStudents }) => {
             })}
           >
             {dataPeriods?.map(el => (
-              <option key={el.id} value={el.id}>{el?.period} Periodo {moment(el.periodYear).format('YYYY')}</option>
+              <option key={el.id} value={el.id}>{el?.period} Periodo {moment(el.periodYear).format('YYYY')} - {el.semester}</option>
             ))}
           </Select>
         </FormControl>

@@ -75,7 +75,7 @@ const Register = ({ dataPeriods }) => {
             })}
           >
             {dataPeriods.map(el => (
-              <option key={el.id} value={el.id}>{el.period} Periodo {moment(el.periodYear).format('YYYY')}</option>
+              <option key={el.id} value={el.id}>{el.period} Periodo {moment(el.periodYear).format('YYYY')} - {el.semester} </option>
             ))}
           </Select>
         </FormControl>

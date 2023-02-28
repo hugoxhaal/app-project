@@ -45,6 +45,7 @@ CREATE TABLE "Periods" (
     "id" SERIAL NOT NULL,
     "periodYear" TIMESTAMP(3) NOT NULL,
     "period" TEXT NOT NULL,
+    "semester" INTEGER NOT NULL,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
     "isClosed" BOOLEAN NOT NULL DEFAULT false,
     "createdDt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -107,7 +108,7 @@ CREATE UNIQUE INDEX "Roles_rolName_key" ON "Roles"("rolName");
 CREATE UNIQUE INDEX "Students_cedula_key" ON "Students"("cedula");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Periods_periodYear_period_key" ON "Periods"("periodYear", "period");
+CREATE UNIQUE INDEX "Periods_periodYear_period_semester_key" ON "Periods"("periodYear", "period", "semester");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Subjects_subjectName_periodId_key" ON "Subjects"("subjectName", "periodId");
